@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       deployment-enabled: true
-      branch-id: main
+      branch-id: test_1
     steps:
       - name: Fetch project data
         uses: ionos-deploy-now/project-action@v1
