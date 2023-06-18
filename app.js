@@ -1,15 +1,6 @@
 const express = require("express");
-var https = require("https");
-var fs = require("fs");
 const app = express();
 const port = process.env.PORT || 3001;
-
-var options = {
-    key: fs.readFileSync("localhost.key"),
-    cert: fs.readFileSync("localhost.crt"),
-    // Don't automatically reject
-    rejectUnauthorized: false
-};
 
 app.get("/", (req, res) => res.type('html').send(html));
 
@@ -52,22 +43,16 @@ app.all('*', function(req, res) {
     }
 })
 
-https
-    .createServer(options,
-        app
-    )
-    .listen(port, function () {
-        console.log(
-            `Server Bypass listening on port ${port}! Go to https://localhost:${port}/`
-        );
-    });
+const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
+server.keepAliveTimeout = 120 * 1000;
+server.headersTimeout = 120 * 1000;
 
 const html = `
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Bypass TCC Server</title>
+    <title>Hello from Render!</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script>
       setTimeout(() => {
@@ -108,7 +93,7 @@ const html = `
   </head>
   <body>
     <section>
-      Bypass TCC Server!
+      Hello from Render!
     </section>
   </body>
 </html>
